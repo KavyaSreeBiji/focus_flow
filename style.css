@@ -47,6 +47,36 @@ body {
   min-height: 100vh;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+  perspective: 1200px;
+}
+
+/* ============================================================
+   3D BACKGROUND GRID
+============================================================ */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: 
+    linear-gradient(var(--indigo-glow) 1px, transparent 1px),
+    linear-gradient(90deg, var(--indigo-glow) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: rotateX(60deg) translateZ(-200px);
+  z-index: -1;
+  pointer-events: none;
+  animation: gridMove 15s linear infinite;
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 60%);
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 60%);
+}
+
+@keyframes gridMove {
+  0% { transform: rotateX(60deg) translateY(0) translateZ(-200px); }
+  100% { transform: rotateX(60deg) translateY(60px) translateZ(-200px); }
 }
 
 /* ============================================================
@@ -56,6 +86,14 @@ body {
   max-width: 860px;
   margin: 0 auto;
   padding: 0 20px 80px;
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+/* Base elements stay relative so they tilt cleanly */
+.toast {
+  position: relative;
+  z-index: 10;
 }
 
 /* ============================================================
@@ -819,21 +857,15 @@ body {
 }
 
 .toast.show {
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
-.daily-quote-container::before {
-  content: '"';
-  position: absolute;
-  top: -10px;
-  left: 10px;
-  font-size: 60px;
-  font-family: serif;
-  color: var(--indigo-glow);
-  opacity: 0.5;
-  line-height: 1;
+/* ============================================================
+   DAILY QUOTE
+============================================================ */
+.daily-quote-container {
+  margin-bottom: 24px;
 }
 
 .daily-quote-text {
@@ -842,8 +874,6 @@ body {
   color: var(--text);
   font-style: italic;
   line-height: 1.5;
-  position: relative;
-  z-index: 1;
 }
 
 .daily-quote-author {
@@ -853,6 +883,7 @@ body {
   text-transform: uppercase;
   letter-spacing: .08em;
   text-align: right;
+  margin-top: 8px;
 }
 
 /* ============================================================

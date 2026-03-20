@@ -420,3 +420,29 @@ function renderDailyQuote() {
 /* ---------- INIT ---------- */
 renderTasks();
 renderDailyQuote();
+
+/* ---------- 3D BACKGROUND EFFECT ---------- */
+const shell = document.querySelector('.shell');
+if (shell) {
+  window.addEventListener('mousemove', (e) => {
+    // Disable on touch devices
+    if (window.matchMedia("(hover: none)").matches) return;
+    
+    // Calculate position relative to the center of viewport
+    const x = (e.clientX / window.innerWidth) - 0.5;
+    const y = (e.clientY / window.innerHeight) - 0.5;
+    
+    // Calculate rotation: max 6 degrees of tilt. Negative Y so it rotates towards cursor.
+    const rotateX = y * -6; 
+    const rotateY = x * 6;
+    
+    shell.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+  
+  // Reset the tilt when the mouse leaves the window
+  window.addEventListener('mouseout', (e) => {
+    if (e.relatedTarget === null) {
+      shell.style.transform = 'rotateX(0deg) rotateY(0deg)';
+    }
+  });
+}
