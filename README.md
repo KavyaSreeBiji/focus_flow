@@ -105,12 +105,6 @@ focus_flow/
 
 ---
 
-## 📸 Screenshots
-
-> *Coming soon — Feel free to add screenshots of your app here!*
-
----
-
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
