@@ -174,7 +174,7 @@ async function addTask() {
     done: false
   };
   
-  const { data, error } = await supabase.from('tasks').insert(newTask).select();
+  const { data, error } = await db.from('tasks').insert(newTask).select();
   if (!error && data) {
     tasks.unshift(data[0]);
     document.getElementById('tf-title').value = '';
@@ -190,7 +190,7 @@ async function toggleTask(id) {
   if (!t) return;
   t.done = !t.done;
   
-  const { error } = await supabase.from('tasks').update({ done: t.done }).eq('id', id);
+  const { error } = await db.from('tasks').update({ done: t.done }).eq('id', id);
   if (!error) {
     renderTasks();
     if (t.done) showToast('Task completed!', '✅');
@@ -200,7 +200,7 @@ async function toggleTask(id) {
 }
 
 async function deleteTask(id) {
-  const { error } = await supabase.from('tasks').delete().eq('id', id);
+  const { error } = await db.from('tasks').delete().eq('id', id);
   if (!error) {
     tasks = tasks.filter(x => x.id !== id);
     renderTasks();
@@ -347,7 +347,7 @@ async function addHabit() {
     checked: {}
   };
   
-  const { data, error } = await supabase.from('habits').insert(newHabit).select();
+  const { data, error } = await db.from('habits').insert(newHabit).select();
   if (!error && data) {
     habits.push(data[0]);
     document.getElementById('hf-name').value = '';
@@ -358,7 +358,7 @@ async function addHabit() {
 }
 
 async function deleteHabit(id) {
-  const { error } = await supabase.from('habits').delete().eq('id', id);
+  const { error } = await db.from('habits').delete().eq('id', id);
   if (!error) {
     habits = habits.filter(h => h.id !== id);
     renderHabits();
@@ -371,7 +371,7 @@ async function toggleDay(hid, day) {
   if (!h) return;
   h.checked[day] = !h.checked[day];
   
-  const { error } = await supabase.from('habits').update({ checked: h.checked }).eq('id', hid);
+  const { error } = await db.from('habits').update({ checked: h.checked }).eq('id', hid);
   if (!error) {
     renderHabits();
     if (h.checked[day]) showToast('Keep it up! 🔥', '✓');
